@@ -1,0 +1,243 @@
+Explicação Detalhada com Comentários:
+Estrutura Geral e Estilos:
+
+body: Define o layout da página como flexbox e organiza os elementos em uma coluna.
+#menu-horizontal: Define o menu horizontal onde as imagens são centralizadas e espaçadas.
+#menu-lateral: O menu lateral é oculto por padrão e exibe os menus verticais quando acionados.
+#main-container: Um contêiner flexível que contém tanto o menu lateral quanto a área de conteúdo principal.
+Imagens no Menu Horizontal:
+
+Cada imagem no menu horizontal possui:
+Um evento onclick para abrir o menu lateral correspondente e alterar a imagem clicada.
+Eventos onmouseover e onmouseout para trocar temporariamente a imagem ao passar o mouse, desde que a imagem não tenha sido clicada.
+JavaScript:
+
+abrirMenuLateral(menuId, imgElement):
+
+Exibe o menu lateral e o menu específico relacionado à imagem clicada.
+Restaura todas as outras imagens ao estado original e troca a imagem clicada para um estado "ativo". A imagem permanece alterada até que outra imagem seja clicada.
+trocarImagem(imgElement, newSrc) e retornarImagem(imgElement):
+
+Trocam temporariamente a imagem quando o mouse passa sobre ela, retornando à imagem original ao remover o mouse, a menos que a imagem tenha sido clicada.
+toggleSubmenu(submenuId):
+
+Alterna entre exibir e ocultar submenus dentro do menu lateral.
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menus com Figuras e Submenus</title>
+    <style>
+        /* Estilos gerais do corpo da página */
+        body {
+            font-family: Arial, sans-serif; /* Define a fonte padrão */
+            margin: 0; /* Remove margens padrão */
+            padding: 0; /* Remove espaçamento interno padrão */
+            display: flex; /* Define o layout como flexbox */
+            flex-direction: column; /* Alinha os filhos em coluna (vertical) */
+        }
+
+        /* Estilos para o menu horizontal que contém as figuras */
+        #menu-horizontal {
+            display: flex; /* Layout flexível para alinhamento horizontal */
+            justify-content: center; /* Centraliza as imagens no eixo horizontal */
+            background-color: #f0f0f0; /* Cor de fundo do menu */
+            padding: 10px; /* Espaçamento interno do menu */
+            border-bottom: 1px solid #ccc; /* Linha inferior separadora */
+        }
+
+        /* Estilos para as imagens no menu horizontal */
+        #menu-horizontal img {
+            margin: 0 15px; /* Adiciona espaçamento entre as imagens */
+            cursor: pointer; /* Altera o cursor para indicar que a imagem é clicável */
+            transition: transform 0.2s ease-in-out; /* Adiciona efeito de zoom suave */
+        }
+
+        /* Efeito de zoom ao passar o mouse sobre a imagem */
+        #menu-horizontal img:hover {
+            transform: scale(1.1); /* Aumenta a escala da imagem ligeiramente */
+        }
+
+        /* Estilos para o menu lateral */
+        #menu-lateral {
+            width: 250px; /* Define a largura do menu lateral */
+            background-color: #333; /* Define a cor de fundo do menu lateral */
+            color: #fff; /* Define a cor do texto */
+            padding: 15px; /* Espaçamento interno do menu lateral */
+            display: none; /* O menu lateral está oculto por padrão */
+            flex-direction: column; /* Alinha os itens do menu lateral em coluna */
+        }
+
+        /* Estilos para cada item do menu no menu lateral */
+        #menu-lateral .menu-item {
+            margin-bottom: 10px; /* Espaçamento entre os itens do menu */
+        }
+
+        /* Estilos para os botões dos menus */
+        #menu-lateral .menu-item button {
+            width: 100%; /* Largura do botão ocupa todo o espaço disponível */
+            background-color: #444; /* Cor de fundo do botão */
+            color: #fff; /* Cor do texto do botão */
+            border: none; /* Remove bordas do botão */
+            padding: 10px; /* Espaçamento interno do botão */
+            text-align: left; /* Alinha o texto à esquerda */
+            cursor: pointer; /* Altera o cursor para indicar que o botão é clicável */
+            transition: background-color 0.2s; /* Efeito suave de mudança de cor */
+        }
+
+        /* Efeito de mudança de cor ao passar o mouse sobre o botão */
+        #menu-lateral .menu-item button:hover {
+            background-color: #555; /* Cor de fundo do botão ao passar o mouse */
+        }
+
+        /* Estilos para os submenus */
+        #menu-lateral .submenu {
+            display: none; /* O submenu está oculto por padrão */
+            padding-left: 20px; /* Indenta os submenus para diferenciá-los visualmente */
+            margin-top: 5px; /* Adiciona um pequeno espaço acima do submenu */
+        }
+
+        /* Estilos para os links nos submenus */
+        #menu-lateral .submenu a {
+            display: block; /* Cada link ocupa toda a linha */
+            color: #ccc; /* Cor dos links */
+            text-decoration: none; /* Remove o sublinhado dos links */
+            margin: 5px 0; /* Adiciona espaço vertical entre os links */
+        }
+
+        /* Efeito de mudança de cor ao passar o mouse sobre o link do submenu */
+        #menu-lateral .submenu a:hover {
+            color: #fff; /* Muda a cor do link ao passar o mouse */
+        }
+
+        /* Container principal que contém o menu lateral e o conteúdo */
+        #main-container {
+            display: flex; /* Layout flexível para alinhar o menu lateral e o conteúdo lado a lado */
+            flex-direction: row; /* Alinha os filhos em linha (horizontal) */
+            width: 100%; /* O container principal ocupa toda a largura da página */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Menu Horizontal com Figuras -->
+    <div id="menu-horizontal">
+        <!-- Figuras que acionam o menu lateral ao serem clicadas -->
+        <img src="http://www.sigrh.df.gov.br/images/Menu/TAB_up.jpg" 
+             alt="Menu 1" 
+             id="menu1-img" 
+             onclick="abrirMenuLateral('menu1', this)" 
+             onmouseover="trocarImagem(this, 'http://www.sigrh.df.gov.br/images/Menu/TAB_over.jpg')" 
+             onmouseout="retornarImagem(this)">
+        
+        <img src="http://www.sigrh.df.gov.br/images/Menu/TAB_up.jpg" 
+             alt="Menu 2" 
+             id="menu2-img" 
+             onclick="abrirMenuLateral('menu2', this)" 
+             onmouseover="trocarImagem(this, 'http://www.sigrh.df.gov.br/images/Menu/TAB_over.jpg')" 
+             onmouseout="retornarImagem(this)">
+        
+        <img src="http://www.sigrh.df.gov.br/images/Menu/TAB_up.jpg" 
+             alt="Menu 3" 
+             id="menu3-img" 
+             onclick="abrirMenuLateral('menu3', this)" 
+             onmouseover="trocarImagem(this, 'http://www.sigrh.df.gov.br/images/Menu/TAB_over.jpg')" 
+             onmouseout="retornarImagem(this)">
+    </div>
+
+    <!-- Container principal com Menu Lateral e Conteúdo -->
+    <div id="main-container">
+        <!-- Menu Lateral -->
+        <div id="menu-lateral">
+            <!-- Menu 1 com Submenus -->
+            <div id="menu1" class="menu-item">
+                <button onclick="toggleSubmenu('submenu1')">Menu 1</button>
+                <div id="submenu1" class="submenu">
+                    <a href="#">Submenu 1-1</a>
+                    <a href="#">Submenu 1-2</a>
+                    <a href="#">Submenu 1-3</a>
+                </div>
+            </div>
+
+            <!-- Menu 2 com Submenus -->
+            <div id="menu2" class="menu-item">
+                <button onclick="toggleSubmenu('submenu2')">Menu 2</button>
+                <div id="submenu2" class="submenu">
+                    <a href="#">Submenu 2-1</a>
+                    <a href="#">Submenu 2-2</a>
+                    <a href="#">Submenu 2-3</a>
+                </div>
+            </div>
+
+            <!-- Menu 3 com Submenus -->
+            <div id="menu3" class="menu-item">
+                <button onclick="toggleSubmenu('submenu3')">Menu 3</button>
+                <div id="submenu3" class="submenu">
+                    <a href="#">Submenu 3-1</a>
+                    <a href="#">Submenu 3-2</a>
+                    <a href="#">Submenu 3-3</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Área de conteúdo principal (opcional, pode ser usada para exibir conteúdo) -->
+        <div id="content">
+            <!-- Conteúdo adicional pode ser adicionado aqui -->
+        </div>
+    </div>
+
+    <script>
+        // Função para abrir o menu lateral e exibir o menu correspondente
+        function abrirMenuLateral(menuId, imgElement) {
+            // Define o estilo do menu lateral como 'flex', tornando-o visível
+            document.getElementById('menu-lateral').style.display = 'flex';
+            
+            // Seleciona todos os elementos com a classe 'menu-item' no menu lateral
+            document.querySelectorAll('#menu-lateral .menu-item').forEach(function(item) {
+                // Oculta todos os itens do menu lateral
+                item.style.display = 'none';
+            });
+
+            // Exibe o item do menu lateral correspondente ao ID passado
+            document.getElementById(menuId).style.display = 'block';
+
+            // Seleciona todas as imagens do menu horizontal
+            document.querySelectorAll('#menu-horizontal img').forEach(function(img) {
+                // Restaura a imagem de todas as figuras ao estado original (antes de serem clicadas)
+                img.src = 'http://www.sigrh.df.gov.br/images/Menu/TAB_up.jpg';
+            });
+
+            // Troca a imagem da figura clicada para a versão "ativa"
+            imgElement.src = 'http://www.sigrh.df.gov.br/images/Menu/TAB_over.jpg';
+            // Adiciona um atributo personalizado 'data-clicked' à imagem clicada, indicando que foi clicada
+            imgElement.dataset.clicked = 'true';
+        }
+
+        // Função para trocar a imagem ao passar o mouse
+        function trocarImagem(imgElement, newSrc) {
+            // Apenas troca a imagem se a figura não foi clicada
+            if (!imgElement.dataset.clicked) {
+                imgElement.src = newSrc;
+            }
+        }
+
+        // Função para retornar a imagem ao estado original ao remover o mouse
+        function retornarImagem(imgElement) {
+            // Apenas retorna a imagem se a figura não foi clicada
+            if (!imgElement.dataset.clicked) {
+                imgElement.src = 'http://www.sigrh.df.gov.br/images/Menu/TAB_up.jpg';
+            }
+        }
+
+        // Função para alternar a exibição de submenus
+        function toggleSubmenu(submenuId) {
+            // Seleciona o submenu correspondente ao ID passado
+            var submenu = document.getElementById(submenuId);
+            // Alterna entre exibir ou ocultar o submenu
+            submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>
