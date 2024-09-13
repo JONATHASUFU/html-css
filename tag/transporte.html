@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela Dinâmica</title>
+    <style>
+        table {
+            width: 25%;
+            border-collapse: collapse;
+            table-layout: auto; /* Permite que as colunas se ajustem ao conteúdo */
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+        tr {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <table id="tabela">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Idade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td contenteditable="true">Nome 1</td>
+                <td contenteditable="true">20</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabela = document.getElementById('tabela');
+
+            tabela.addEventListener('keydown', function (event) {
+                if (event.key === 'Tab') {
+                    event.preventDefault();
+                    adicionarLinha();
+                }
+            });
+
+            tabela.addEventListener('contextmenu', function (event) {
+                event.preventDefault();
+                if (event.target.tagName === 'TD') {
+                    const linha = event.target.parentNode;
+                    if (linha.rowIndex !== 0) {  // Evita remover o cabeçalho
+                        linha.remove();
+                    }
+                }
+            });
+
+            function adicionarLinha() {
+                const novaLinha = tabela.insertRow();
+                const celulaNome = novaLinha.insertCell();
+                const celulaIdade = novaLinha.insertCell();
+
+                celulaNome.contentEditable = 'true';
+                celulaIdade.contentEditable = 'true';
+
+                celulaNome.innerText = 'Novo Nome';
+                celulaIdade.innerText = '0';
+            }
+        });
+    </script>
+
+</body>
+</html>
+
+
+
+  

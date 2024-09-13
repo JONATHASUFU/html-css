@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo de Colspan e Rowspan</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Exemplo de colspan e rowspan em Tabelas</h2>
+    
+    <!-- Primeira Tabela -->
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Sobrenome</th>
+                <th>Idade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="2">João</td>
+                <td>Silva</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>Souza</td>
+                <td>26</td>
+            </tr>
+            <tr>
+                <td>Maria</td>
+                <td>Oliveira</td>
+                <td>30</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Segunda Tabela -->
+    <table>
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Preço</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="2">Notebook</td>
+                <td>1</td>
+                <td>R$ 3.000,00</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>R$ 5.800,00</td>
+            </tr>
+            <tr>
+                <td>Mouse</td>
+                <td>2</td>
+                <td>R$ 50,00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Terceira Tabela com colspan e rowspan -->
+    <table>
+        <thead>
+            <tr>
+                <th>Categoria</th>
+                <th>Detalhe</th>
+                <th>Valor</th>
+                <th>Notas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="2">Eletrônicos</td>
+                <td colspan="2">Televisão</td>
+                <td>Samsung</td>
+            </tr>
+            <tr>
+                <td colspan="2">Smartphone</td>
+                <td>Apple</td>
+            </tr>
+            <tr>
+                <td>Roupas</td>
+                <td>Camisa</td>
+                <td>R$ 50,00</td>
+                <td>Veste bem</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

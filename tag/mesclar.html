@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesclar Células Verticalmente</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Mesclar Células Verticalmente</h2>
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>Categoria</th>
+                <th>Item</th>
+                <th>Preço</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Eletrônicos</td>
+                <td>Televisão</td>
+                <td>R$ 3.000,00</td>
+            </tr>
+            <tr>
+                <td>Roupas</td>
+                <td>Smartphone</td>
+                <td>R$ 2.000,00</td>
+            </tr>
+            <tr>
+                <td>Eletrônicos</td>
+                <td>Camisa</td>
+                <td>R$ 50,00</td>
+            </tr>
+            <tr>
+                <td>Roupas</td>
+                <td>Calça</td>
+                <td>R$ 100,00</td>
+            </tr>
+            <tr>
+                <td>Eletrônicos</td>
+                <td>Jaqueta</td>
+                <td>R$ 150,00</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <button onclick="reclassifyRows('myTable', 0)">Classificar Linhas</button>
+    <button onclick="mergeVerticalCells('myTable', 0)">Mesclar Células</button>
+
+    <script>
+        function reclassifyRows(tableId, columnIndex) {
+            var table = document.getElementById(tableId);
+            var rows = Array.from(table.getElementsByTagName("tr")).slice(1); // Exclui o cabeçalho
+            var rowData = [];
+
+            // Coleta os dados das linhas
+            rows.forEach(row => {
+                var cells = Array.from(row.getElementsByTagName("td"));
+                var rowValues = cells.map(cell => cell.innerHTML);
+                rowData.push(rowValues);
+            });
+
+            // Ordena os dados por coluna especificada
+            rowData.sort((a, b) => a[columnIndex].localeCompare(b[columnIndex]));
+
+            // Atualiza as linhas com os dados ordenados
+            rowData.forEach((rowValues, i) => {
+                var newRow = rows[i];
+                rowValues.forEach((value, j) => {
+                    newRow.getElementsByTagName("td")[j].innerHTML = value;
+                });
+            });
+        }
+
+        function mergeVerticalCells(tableId, columnIndex) {
+            var table = document.getElementById(tableId);
+            var rows = Array.from(table.getElementsByTagName("tr")).slice(1); // Exclui o cabeçalho
+            var lastValue = null;
+            var lastCell = null;
+
+            // Itera através de cada linha
+            rows.forEach((row, i) => {
+                var currentCell = row.getElementsByTagName("td")[columnIndex];
+
+                // Continua se a célula já estiver oculta
+                if (currentCell.style.display === "none") {
+                    return;
+                }
+
+                if (currentCell.innerHTML === lastValue) {
+                    // Aumenta o rowSpan para a célula anterior
+                    lastCell.rowSpan = (lastCell.rowSpan || 1) + 1;
+                    // Oculta a célula atual
+                    currentCell.style.display = "none";
+                } else {
+                    // Atualiza lastValue e lastCell se o valor mudar
+                    lastValue = currentCell.innerHTML;
+                    lastCell = currentCell;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

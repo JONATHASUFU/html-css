@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesclar Células Verticalmente</title>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2 style="text-align: center;">Mesclar Células Verticalmente</h2>
+    <table id="myTable">
+        <thead>
+            <tr>
+                <th>Categoria</th>
+                <th>Item</th>
+                <th>Preço</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Eletrônicos</td>
+                <td>Televisão</td>
+                <td>R$ 3.000,00</td>
+            </tr>
+            <tr>
+                <td>Eletrônicos</td>
+                <td>Smartphone</td>
+                <td>R$ 2.000,00</td>
+            </tr>
+            <tr>
+                <td>Roupas</td>
+                <td>Camisa</td>
+                <td>R$ 50,00</td>
+            </tr>
+            <tr>
+                <td>Roupas</td>
+                <td>Calça</td>
+                <td>R$ 100,00</td>
+            </tr>
+            <tr>
+                <td>Roupas</td>
+                <td>Jaqueta</td>
+                <td>R$ 150,00</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <button onclick="mergeVerticalCells('myTable', 0)">Mesclar Células</button>
+
+    <script>
+        function mergeVerticalCells(tableId, columnIndex) {
+            var table = document.getElementById(tableId);
+            var rows = table.getElementsByTagName("tr");
+            var lastValue = null;
+            var startRow = 1; // Índice para começar o processamento após o cabeçalho
+
+            // Itera através de cada linha
+            for (var i = startRow; i < rows.length; i++) {
+                var currentCell = rows[i].getElementsByTagName("td")[columnIndex];
+                var previousCell = rows[i - 1].getElementsByTagName("td")[columnIndex];
+
+                if (currentCell.innerHTML === lastValue) {
+                    // Aumenta o rowSpan para a célula anterior
+                    previousCell.rowSpan = (previousCell.rowSpan || 1) + 1;
+                    // Oculta a célula atual
+                    currentCell.style.display = "none";
+                } else {
+                    // Atualiza lastValue se o valor mudar
+                    lastValue = currentCell.innerHTML;
+                }
+            }
+
+            // Passe final para garantir que a última linha seja tratada corretamente
+            for (var i = startRow; i < rows.length; i++) {
+                var currentCell = rows[i].getElementsByTagName("td")[columnIndex];
+                var previousCell = rows[i - 1].getElementsByTagName("td")[columnIndex];
+
+                if (currentCell.style.display === "none" && previousCell.innerHTML === lastValue) {
+                    previousCell.rowSpan = (previousCell.rowSpan || 1) + 1;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
